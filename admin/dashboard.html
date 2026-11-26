@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Admin Panel</title>
+
+    <link
+      rel="shortcut icon"
+      href="../client/assets/img/favicon.png"
+      type="image/png"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/admin.css" />
+  </head>
+  <body>
+    <script src="../client/assets/js/validation.js"></script>
+    <script src="assets/js/admin-validation.js"></script>
+    <script>
+      // Authentication Check - Must be first script
+      (function () {
+        const isLoggedIn =
+          sessionStorage.getItem("adminLoggedIn") === "true" ||
+          localStorage.getItem("adminLoggedIn") === "true";
+        if (!isLoggedIn) {
+          window.location.href = "../client/login.html";
+        }
+      })();
+    </script>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="dashboard.html" class="sidebar__logo">
+        <i class="ri-plane-line"></i> Travel Admin
+      </a>
+
+      <nav class="sidebar__menu">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a href="dashboard.html" class="sidebar__link active">
+              <i class="ri-dashboard-line sidebar__icon"></i>
+              <span class="sidebar__name">Dashboard</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="destinations.html" class="sidebar__link">
+              <i class="ri-map-pin-line sidebar__icon"></i>
+              <span class="sidebar__name">Destinations</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="bookings.html" class="sidebar__link">
+              <i class="ri-calendar-check-line sidebar__icon"></i>
+              <span class="sidebar__name">Bookings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="users.html" class="sidebar__link">
+              <i class="ri-user-line sidebar__icon"></i>
+              <span class="sidebar__name">Users</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="blog.html" class="sidebar__link">
+              <i class="ri-article-line sidebar__icon"></i>
+              <span class="sidebar__name">Blog & Guides</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="messages.html" class="sidebar__link">
+              <i class="ri-message-line sidebar__icon"></i>
+              <span class="sidebar__name">Messages</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="settings.html" class="sidebar__link">
+              <i class="ri-settings-line sidebar__icon"></i>
+              <span class="sidebar__name">Settings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a
+              href="login.html"
+              class="sidebar__link"
+              onclick="logout(); return false;"
+            >
+              <i class="ri-logout-box-line sidebar__icon"></i>
+              <span class="sidebar__name">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="admin-header">
+        <div>
+          <button
+            class="sidebar-toggle"
+            id="sidebarToggle"
+            style="display: none"
+          >
+            <i class="ri-menu-line"></i>
+          </button>
+          <h1 class="admin-header__title">Dashboard</h1>
+        </div>
+        <div class="admin-header__user">
+          <div class="admin-header__user-info">
+            <div class="admin-header__user-name">Admin User</div>
+            <div class="admin-header__user-role">Administrator</div>
+          </div>
+          <div class="admin-header__avatar">
+            <i class="ri-user-fill"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Total Bookings</span>
+            <div class="stat-card__icon stat-card__icon--blue">
+              <i class="ri-calendar-check-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">1,234</div>
+          <div class="stat-card__change stat-card__change--positive">
+            <i class="ri-arrow-up-line"></i>
+            <span>12% from last month</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Total Revenue</span>
+            <div class="stat-card__icon stat-card__icon--green">
+              <i class="ri-money-dollar-circle-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">$45,678</div>
+          <div class="stat-card__change stat-card__change--positive">
+            <i class="ri-arrow-up-line"></i>
+            <span>8% from last month</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Active Users</span>
+            <div class="stat-card__icon stat-card__icon--orange">
+              <i class="ri-user-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">856</div>
+          <div class="stat-card__change stat-card__change--positive">
+            <i class="ri-arrow-up-line"></i>
+            <span>5% from last month</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Destinations</span>
+            <div class="stat-card__icon stat-card__icon--purple">
+              <i class="ri-map-pin-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">24</div>
+          <div class="stat-card__change stat-card__change--positive">
+            <i class="ri-arrow-up-line"></i>
+            <span>3 new this month</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Bookings -->
+      <div class="content-card">
+        <div class="content-card__header">
+          <h2 class="content-card__title">Recent Bookings</h2>
+          <a href="bookings.html" class="button button--small">View All</a>
+        </div>
+
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Destination</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#BK001</td>
+                <td>John Doe</td>
+                <td>Bali, Indonesia</td>
+                <td>2024-11-15</td>
+                <td>$2,499</td>
+                <td><span class="badge badge--success">Confirmed</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button class="button button--small button--secondary">
+                      View
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#BK002</td>
+                <td>Jane Smith</td>
+                <td>Hawaii, USA</td>
+                <td>2024-11-16</td>
+                <td>$3,499</td>
+                <td><span class="badge badge--warning">Pending</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button class="button button--small button--secondary">
+                      View
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#BK003</td>
+                <td>Mike Johnson</td>
+                <td>Bora Bora</td>
+                <td>2024-11-17</td>
+                <td>$1,599</td>
+                <td><span class="badge badge--success">Confirmed</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button class="button button--small button--secondary">
+                      View
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#BK004</td>
+                <td>Sarah Williams</td>
+                <td>Whitehaven, Australia</td>
+                <td>2024-11-18</td>
+                <td>$2,499</td>
+                <td><span class="badge badge--info">Processing</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button class="button button--small button--secondary">
+                      View
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="content-card">
+        <div class="content-card__header">
+          <h2 class="content-card__title">Quick Actions</h2>
+        </div>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+          "
+        >
+          <a href="destinations.html" class="button button--flex">
+            <i class="ri-add-line"></i>
+            Add Destination
+          </a>
+          <a href="blog.html" class="button button--flex">
+            <i class="ri-article-line"></i>
+            New Blog Post
+          </a>
+          <a href="messages.html" class="button button--flex">
+            <i class="ri-message-line"></i>
+            View Messages
+          </a>
+          <a href="users.html" class="button button--flex">
+            <i class="ri-user-add-line"></i>
+            Manage Users
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Sidebar toggle for mobile
+      const sidebarToggle = document.getElementById("sidebarToggle");
+      const sidebar = document.getElementById("sidebar");
+
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("active");
+        });
+      }
+
+      // Show/hide sidebar toggle based on screen size
+      function handleResize() {
+        if (window.innerWidth <= 968) {
+          sidebarToggle.style.display = "block";
+        } else {
+          sidebarToggle.style.display = "none";
+          sidebar.classList.remove("active");
+        }
+      }
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
+
+      // Logout function
+      function logout() {
+        sessionStorage.removeItem("adminLoggedIn");
+        sessionStorage.removeItem("adminEmail");
+        localStorage.removeItem("adminLoggedIn");
+        localStorage.removeItem("adminEmail");
+        window.location.href = "../client/index.html";
+      }
+    </script>
+  </body>
+</html>

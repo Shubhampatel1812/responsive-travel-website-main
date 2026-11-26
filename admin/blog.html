@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog & Travel Guides | Admin Panel</title>
+
+    <link
+      rel="shortcut icon"
+      href="../client/assets/img/favicon.png"
+      type="image/png"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/admin.css" />
+  </head>
+  <body>
+    <script src="../client/assets/js/validation.js"></script>
+    <script src="assets/js/admin-validation.js"></script>
+    <script>
+      // Authentication Check
+      (function () {
+        const isLoggedIn =
+          sessionStorage.getItem("adminLoggedIn") === "true" ||
+          localStorage.getItem("adminLoggedIn") === "true";
+        if (!isLoggedIn) {
+          window.location.href = "../client/login.html";
+        }
+      })();
+    </script>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="dashboard.html" class="sidebar__logo">
+        <i class="ri-plane-line"></i> Travel Admin
+      </a>
+
+      <nav class="sidebar__menu">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a href="dashboard.html" class="sidebar__link">
+              <i class="ri-dashboard-line sidebar__icon"></i>
+              <span class="sidebar__name">Dashboard</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="destinations.html" class="sidebar__link">
+              <i class="ri-map-pin-line sidebar__icon"></i>
+              <span class="sidebar__name">Destinations</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="bookings.html" class="sidebar__link">
+              <i class="ri-calendar-check-line sidebar__icon"></i>
+              <span class="sidebar__name">Bookings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="users.html" class="sidebar__link">
+              <i class="ri-user-line sidebar__icon"></i>
+              <span class="sidebar__name">Users</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="blog.html" class="sidebar__link active">
+              <i class="ri-article-line sidebar__icon"></i>
+              <span class="sidebar__name">Blog & Guides</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="messages.html" class="sidebar__link">
+              <i class="ri-message-line sidebar__icon"></i>
+              <span class="sidebar__name">Messages</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="settings.html" class="sidebar__link">
+              <i class="ri-settings-line sidebar__icon"></i>
+              <span class="sidebar__name">Settings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a
+              href="login.html"
+              class="sidebar__link"
+              onclick="logout(); return false;"
+            >
+              <i class="ri-logout-box-line sidebar__icon"></i>
+              <span class="sidebar__name">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="admin-header">
+        <div>
+          <button
+            class="sidebar-toggle"
+            id="sidebarToggle"
+            style="display: none"
+          >
+            <i class="ri-menu-line"></i>
+          </button>
+          <h1 class="admin-header__title">Blog & Travel Guides</h1>
+        </div>
+        <div class="admin-header__user">
+          <div class="admin-header__user-info">
+            <div class="admin-header__user-name">Admin User</div>
+            <div class="admin-header__user-role">Administrator</div>
+          </div>
+          <div class="admin-header__avatar">
+            <i class="ri-user-fill"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Card -->
+      <div class="content-card">
+        <div class="content-card__header">
+          <h2 class="content-card__title">All Posts</h2>
+          <button class="button" onclick="openAddModal()">
+            <i class="ri-add-line"></i> New Post
+          </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <i class="ri-search-line search-bar__icon"></i>
+          <input
+            type="text"
+            class="search-bar__input"
+            placeholder="Search posts by title..."
+          />
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Author</th>
+                <th>Date</th>
+                <th>Views</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <img
+                    src="../client/assets/img/discover1.jpg"
+                    alt="Post"
+                    style="
+                      width: 60px;
+                      height: 60px;
+                      object-fit: cover;
+                      border-radius: var(--border-radius);
+                    "
+                  />
+                </td>
+                <td>10 Best Beaches in Bali</td>
+                <td>Travel Guide</td>
+                <td>Admin</td>
+                <td>2024-11-01</td>
+                <td>1,234</td>
+                <td><span class="badge badge--success">Published</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="openEditModal()"
+                    >
+                      Edit
+                    </button>
+                    <button class="button button--small button--danger">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img
+                    src="../client/assets/img/discover2.jpg"
+                    alt="Post"
+                    style="
+                      width: 60px;
+                      height: 60px;
+                      object-fit: cover;
+                      border-radius: var(--border-radius);
+                    "
+                  />
+                </td>
+                <td>Ultimate Hawaii Travel Guide</td>
+                <td>Travel Tips</td>
+                <td>Admin</td>
+                <td>2024-10-25</td>
+                <td>856</td>
+                <td><span class="badge badge--success">Published</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="openEditModal()"
+                    >
+                      Edit
+                    </button>
+                    <button class="button button--small button--danger">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img
+                    src="../client/assets/img/discover3.jpg"
+                    alt="Post"
+                    style="
+                      width: 60px;
+                      height: 60px;
+                      object-fit: cover;
+                      border-radius: var(--border-radius);
+                    "
+                  />
+                </td>
+                <td>Budget Travel Tips for 2024</td>
+                <td>Travel Tips</td>
+                <td>Admin</td>
+                <td>2024-10-15</td>
+                <td>2,145</td>
+                <td><span class="badge badge--success">Published</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="openEditModal()"
+                    >
+                      Edit
+                    </button>
+                    <button class="button button--small button--danger">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img
+                    src="../client/assets/img/discover4.jpg"
+                    alt="Post"
+                    style="
+                      width: 60px;
+                      height: 60px;
+                      object-fit: cover;
+                      border-radius: var(--border-radius);
+                    "
+                  />
+                </td>
+                <td>Hidden Gems in Croatia</td>
+                <td>Travel Guide</td>
+                <td>Admin</td>
+                <td>2024-11-05</td>
+                <td>0</td>
+                <td><span class="badge badge--warning">Draft</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="openEditModal()"
+                    >
+                      Edit
+                    </button>
+                    <button class="button button--small button--danger">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination__button" disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button class="pagination__button pagination__button--active">
+            1
+          </button>
+          <button class="pagination__button">2</button>
+          <button class="pagination__button">3</button>
+          <button class="pagination__button">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="blogModal">
+      <div class="modal__content" style="max-width: 800px">
+        <div class="modal__header">
+          <h3 class="modal__title" id="modalTitle">New Blog Post</h3>
+          <button class="modal__close" onclick="closeModal()">
+            <i class="ri-close-line"></i>
+          </button>
+        </div>
+
+        <form>
+          <div class="form-group">
+            <label class="form-label" for="postTitle">Post Title</label>
+            <input
+              type="text"
+              id="postTitle"
+              class="form-input"
+              placeholder="Enter post title..."
+              required
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="postCategory">Category</label>
+              <select id="postCategory" class="form-select">
+                <option>Travel Guide</option>
+                <option>Travel Tips</option>
+                <option>Destination Review</option>
+                <option>Travel Stories</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="postStatus">Status</label>
+              <select id="postStatus" class="form-select">
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="postExcerpt">Excerpt</label>
+            <textarea
+              id="postExcerpt"
+              class="form-textarea"
+              style="min-height: 80px"
+              placeholder="Short description of the post..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="postContent">Content</label>
+            <textarea
+              id="postContent"
+              class="form-textarea"
+              style="min-height: 300px"
+              placeholder="Write your blog post content here..."
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Featured Image</label>
+            <div
+              class="image-upload"
+              onclick="document.getElementById('blogImageInput').click()"
+            >
+              <i class="ri-image-add-line image-upload__icon"></i>
+              <p class="image-upload__text">Click to upload featured image</p>
+              <input
+                type="file"
+                id="blogImageInput"
+                accept="image/*"
+                style="display: none"
+              />
+            </div>
+            <div
+              class="image-preview"
+              id="blogImagePreview"
+              style="display: none"
+            >
+              <img id="blogPreviewImg" src="" alt="Preview" />
+            </div>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              gap: 1rem;
+              justify-content: flex-end;
+              margin-top: 2rem;
+            "
+          >
+            <button
+              type="button"
+              class="button button--secondary"
+              onclick="closeModal()"
+            >
+              Cancel
+            </button>
+            <button type="submit" class="button">Publish Post</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Sidebar toggle
+      const sidebarToggle = document.getElementById("sidebarToggle");
+      const sidebar = document.getElementById("sidebar");
+
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("active");
+        });
+      }
+
+      function handleResize() {
+        if (window.innerWidth <= 968) {
+          sidebarToggle.style.display = "block";
+        } else {
+          sidebarToggle.style.display = "none";
+          sidebar.classList.remove("active");
+        }
+      }
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
+
+      // Modal functions
+      function openAddModal() {
+        document.getElementById("modalTitle").textContent = "New Blog Post";
+        document.getElementById("blogModal").classList.add("active");
+      }
+
+      function openEditModal() {
+        document.getElementById("modalTitle").textContent = "Edit Blog Post";
+        document.getElementById("blogModal").classList.add("active");
+      }
+
+      function closeModal() {
+        document.getElementById("blogModal").classList.remove("active");
+      }
+
+      // Image preview
+      document
+        .getElementById("blogImageInput")
+        .addEventListener("change", function (e) {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              document.getElementById("blogPreviewImg").src = e.target.result;
+              document.getElementById("blogImagePreview").style.display =
+                "block";
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+      // Close modal on outside click
+      document
+        .getElementById("blogModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeModal();
+          }
+        });
+
+      // Logout function
+      function logout() {
+        sessionStorage.removeItem("adminLoggedIn");
+        sessionStorage.removeItem("adminEmail");
+        localStorage.removeItem("adminLoggedIn");
+        localStorage.removeItem("adminEmail");
+        window.location.href = "../client/index.html";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings | Admin Panel</title>
+
+    <link
+      rel="shortcut icon"
+      href="../client/assets/img/favicon.png"
+      type="image/png"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/admin.css" />
+  </head>
+  <body>
+    <script src="../client/assets/js/validation.js"></script>
+    <script src="assets/js/admin-validation.js"></script>
+    <script>
+      // Authentication Check
+      (function () {
+        const isLoggedIn =
+          sessionStorage.getItem("adminLoggedIn") === "true" ||
+          localStorage.getItem("adminLoggedIn") === "true";
+        if (!isLoggedIn) {
+          window.location.href = "../client/login.html";
+        }
+      })();
+    </script>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="dashboard.html" class="sidebar__logo">
+        <i class="ri-plane-line"></i> Travel Admin
+      </a>
+
+      <nav class="sidebar__menu">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a href="dashboard.html" class="sidebar__link">
+              <i class="ri-dashboard-line sidebar__icon"></i>
+              <span class="sidebar__name">Dashboard</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="destinations.html" class="sidebar__link">
+              <i class="ri-map-pin-line sidebar__icon"></i>
+              <span class="sidebar__name">Destinations</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="bookings.html" class="sidebar__link">
+              <i class="ri-calendar-check-line sidebar__icon"></i>
+              <span class="sidebar__name">Bookings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="users.html" class="sidebar__link">
+              <i class="ri-user-line sidebar__icon"></i>
+              <span class="sidebar__name">Users</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="blog.html" class="sidebar__link">
+              <i class="ri-article-line sidebar__icon"></i>
+              <span class="sidebar__name">Blog & Guides</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="messages.html" class="sidebar__link">
+              <i class="ri-message-line sidebar__icon"></i>
+              <span class="sidebar__name">Messages</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="settings.html" class="sidebar__link active">
+              <i class="ri-settings-line sidebar__icon"></i>
+              <span class="sidebar__name">Settings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a
+              href="login.html"
+              class="sidebar__link"
+              onclick="logout(); return false;"
+            >
+              <i class="ri-logout-box-line sidebar__icon"></i>
+              <span class="sidebar__name">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="admin-header">
+        <div>
+          <button
+            class="sidebar-toggle"
+            id="sidebarToggle"
+            style="display: none"
+          >
+            <i class="ri-menu-line"></i>
+          </button>
+          <h1 class="admin-header__title">Settings</h1>
+        </div>
+        <div class="admin-header__user">
+          <div class="admin-header__user-info">
+            <div class="admin-header__user-name">Admin User</div>
+            <div class="admin-header__user-role">Administrator</div>
+          </div>
+          <div class="admin-header__avatar">
+            <i class="ri-user-fill"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- Profile Settings -->
+      <div class="content-card">
+        <div class="content-card__header">
+          <h2 class="content-card__title">Profile Settings</h2>
+        </div>
+
+        <form>
+          <div class="form-group">
+            <label class="form-label">Profile Picture</label>
+            <div style="display: flex; align-items: center; gap: 1.5rem">
+              <div
+                class="admin-header__avatar"
+                style="width: 80px; height: 80px; font-size: 2rem"
+              >
+                <i class="ri-user-fill"></i>
+              </div>
+              <div>
+                <button type="button" class="button button--small">
+                  Change Photo
+                </button>
+                <p
+                  style="
+                    margin: 0.5rem 0 0 0;
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                  "
+                >
+                  JPG, PNG or GIF. Max size 2MB
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="adminName">Full Name</label>
+              <input
+                type="text"
+                id="adminName"
+                class="form-input"
+                value="Admin User"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="adminEmail">Email Address</label>
+              <input
+                type="email"
+                id="adminEmail"
+                class="form-input"
+                value="admin@travel.com"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="adminPhone">Phone Number</label>
+              <input
+                type="tel"
+                id="adminPhone"
+                class="form-input"
+                value="+1 234 567 8900"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="adminRole">Role</label>
+              <input
+                type="text"
+                id="adminRole"
+                class="form-input"
+                value="Administrator"
+                disabled
+              />
+            </div>
+          </div>
+
+          <div
+            style="display: flex; justify-content: flex-end; margin-top: 1.5rem"
+          >
+            <button type="submit" class="button">Save Changes</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Change Password -->
+      <div class="content-card">
+        <div class="content-card__header">
+          <h2 class="content-card__title">Change Password</h2>
+        </div>
+
+        <form>
+          <div class="form-group">
+            <label class="form-label" for="currentPassword"
+              >Current Password</label
+            >
+            <input
+              type="password"
+              id="currentPassword"
+              class="form-input"
+              placeholder="Enter current password"
+              required
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="newPassword">New Password</label>
+              <input
+                type="password"
+                id="newPassword"
+                class="form-input"
+                placeholder="Enter new password"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="confirmPassword"
+                >Confirm New Password</label
+              >
+              <input
+                type="password"
+                id="confirmPassword"
+                class="form-input"
+                placeholder="Confirm new password"
+                required
+              />
+            </div>
+          </div>
+
+          <div
+            style="display: flex; justify-content: flex-end; margin-top: 1.5rem"
+          >
+            <button type="submit" class="button">Update Password</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Site Settings -->
+      <div class="content-card">
+        <div class="content-card__header">
+          <h2 class="content-card__title">Site Settings</h2>
+        </div>
+
+        <form>
+          <div class="form-group">
+            <label class="form-label">Site Logo</label>
+            <div style="display: flex; align-items: center; gap: 1.5rem">
+              <div
+                style="
+                  width: 120px;
+                  height: 60px;
+                  background-color: var(--first-color);
+                  border-radius: var(--border-radius);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  color: var(--white-color);
+                  font-weight: var(--font-semi-bold);
+                "
+              >
+                Travel
+              </div>
+              <div>
+                <button type="button" class="button button--small">
+                  Upload New Logo
+                </button>
+                <p
+                  style="
+                    margin: 0.5rem 0 0 0;
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                  "
+                >
+                  Recommended: 200x60px, PNG or SVG
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="siteName">Site Name</label>
+            <input
+              type="text"
+              id="siteName"
+              class="form-input"
+              value="Travel"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="siteEmail">Contact Email</label>
+            <input
+              type="email"
+              id="siteEmail"
+              class="form-input"
+              value="contact@travel.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sitePhone">Contact Phone</label>
+            <input
+              type="tel"
+              id="sitePhone"
+              class="form-input"
+              value="+1 234 567 8900"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="primaryColor">Primary Color</label>
+            <div style="display: flex; align-items: center; gap: 1rem">
+              <input
+                type="color"
+                id="primaryColor"
+                value="#0e373f"
+                style="
+                  width: 60px;
+                  height: 40px;
+                  border: none;
+                  border-radius: var(--border-radius);
+                  cursor: pointer;
+                "
+              />
+              <input
+                type="text"
+                class="form-input"
+                value="#0e373f"
+                style="flex: 1"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="siteDescription"
+              >Site Description</label
+            >
+            <textarea
+              id="siteDescription"
+              class="form-textarea"
+              style="min-height: 100px"
+              placeholder="Enter site description..."
+            >
+Travel you choose the destination, we offer you the experience.</textarea
+            >
+          </div>
+
+          <div
+            style="display: flex; justify-content: flex-end; margin-top: 1.5rem"
+          >
+            <button type="submit" class="button">Save Settings</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Social Media Links -->
+      <div class="content-card">
+        <div class="content-card__header">
+          <h2 class="content-card__title">Social Media Links</h2>
+        </div>
+
+        <form>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="facebook">Facebook</label>
+              <input
+                type="url"
+                id="facebook"
+                class="form-input"
+                placeholder="https://facebook.com/yourpage"
+                value="https://www.facebook.com/"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="instagram">Instagram</label>
+              <input
+                type="url"
+                id="instagram"
+                class="form-input"
+                placeholder="https://instagram.com/yourpage"
+                value="https://www.instagram.com/"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="twitter">Twitter</label>
+              <input
+                type="url"
+                id="twitter"
+                class="form-input"
+                placeholder="https://twitter.com/yourpage"
+                value="https://twitter.com/"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="youtube">YouTube</label>
+              <input
+                type="url"
+                id="youtube"
+                class="form-input"
+                placeholder="https://youtube.com/yourchannel"
+                value="https://www.youtube.com/"
+              />
+            </div>
+          </div>
+
+          <div
+            style="display: flex; justify-content: flex-end; margin-top: 1.5rem"
+          >
+            <button type="submit" class="button">Save Social Links</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <script>
+      // Initialize form validation for all forms
+      document.addEventListener("DOMContentLoaded", function () {
+        // Profile Settings Form
+        const profileForm = document.querySelector(
+          ".content-card:nth-child(2) form"
+        );
+        if (profileForm) {
+          new AdminFormValidator(profileForm.id || "profileForm");
+        }
+
+        // Change Password Form
+        const passwordForm = document.querySelector(
+          ".content-card:nth-child(3) form"
+        );
+        if (passwordForm) {
+          new AdminFormValidator(passwordForm.id || "passwordForm");
+        }
+
+        // Site Settings Form
+        const siteForm = document.querySelector(
+          ".content-card:nth-child(4) form"
+        );
+        if (siteForm) {
+          new AdminFormValidator(siteForm.id || "siteForm");
+        }
+
+        // Social Media Form
+        const socialForm = document.querySelector(
+          ".content-card:nth-child(5) form"
+        );
+        if (socialForm) {
+          new AdminFormValidator(socialForm.id || "socialForm");
+        }
+      });
+
+      // Sidebar toggle
+      const sidebarToggle = document.getElementById("sidebarToggle");
+      const sidebar = document.getElementById("sidebar");
+
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("active");
+        });
+      }
+
+      function handleResize() {
+        if (window.innerWidth <= 968) {
+          sidebarToggle.style.display = "block";
+        } else {
+          sidebarToggle.style.display = "none";
+          sidebar.classList.remove("active");
+        }
+      }
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
+
+      // Color picker sync
+      const colorPicker = document.getElementById("primaryColor");
+      const colorInput = colorPicker.nextElementSibling;
+
+      colorPicker.addEventListener("input", function () {
+        colorInput.value = this.value;
+      });
+
+      colorInput.addEventListener("input", function () {
+        if (/^#[0-9A-F]{6}$/i.test(this.value)) {
+          colorPicker.value = this.value;
+        }
+      });
+
+      // Logout function
+      function logout() {
+        sessionStorage.removeItem("adminLoggedIn");
+        sessionStorage.removeItem("adminEmail");
+        localStorage.removeItem("adminLoggedIn");
+        localStorage.removeItem("adminEmail");
+        window.location.href = "../client/index.html";
+      }
+    </script>
+  </body>
+</html>

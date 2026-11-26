@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Users | Admin Panel</title>
+
+    <link
+      rel="shortcut icon"
+      href="../client/assets/img/favicon.png"
+      type="image/png"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/admin.css" />
+  </head>
+  <body>
+    <script src="../client/assets/js/validation.js"></script>
+    <script src="assets/js/admin-validation.js"></script>
+    <script>
+      // Authentication Check
+      (function () {
+        const isLoggedIn =
+          sessionStorage.getItem("adminLoggedIn") === "true" ||
+          localStorage.getItem("adminLoggedIn") === "true";
+        if (!isLoggedIn) {
+          window.location.href = "../client/login.html";
+        }
+      })();
+    </script>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="dashboard.html" class="sidebar__logo">
+        <i class="ri-plane-line"></i> Travel Admin
+      </a>
+
+      <nav class="sidebar__menu">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a href="dashboard.html" class="sidebar__link">
+              <i class="ri-dashboard-line sidebar__icon"></i>
+              <span class="sidebar__name">Dashboard</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="destinations.html" class="sidebar__link">
+              <i class="ri-map-pin-line sidebar__icon"></i>
+              <span class="sidebar__name">Destinations</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="bookings.html" class="sidebar__link">
+              <i class="ri-calendar-check-line sidebar__icon"></i>
+              <span class="sidebar__name">Bookings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="users.html" class="sidebar__link active">
+              <i class="ri-user-line sidebar__icon"></i>
+              <span class="sidebar__name">Users</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="blog.html" class="sidebar__link">
+              <i class="ri-article-line sidebar__icon"></i>
+              <span class="sidebar__name">Blog & Guides</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="messages.html" class="sidebar__link">
+              <i class="ri-message-line sidebar__icon"></i>
+              <span class="sidebar__name">Messages</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="settings.html" class="sidebar__link">
+              <i class="ri-settings-line sidebar__icon"></i>
+              <span class="sidebar__name">Settings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a
+              href="login.html"
+              class="sidebar__link"
+              onclick="logout(); return false;"
+            >
+              <i class="ri-logout-box-line sidebar__icon"></i>
+              <span class="sidebar__name">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="admin-header">
+        <div>
+          <button
+            class="sidebar-toggle"
+            id="sidebarToggle"
+            style="display: none"
+          >
+            <i class="ri-menu-line"></i>
+          </button>
+          <h1 class="admin-header__title">Manage Users</h1>
+        </div>
+        <div class="admin-header__user">
+          <div class="admin-header__user-info">
+            <div class="admin-header__user-name">Admin User</div>
+            <div class="admin-header__user-role">Administrator</div>
+          </div>
+          <div class="admin-header__avatar">
+            <i class="ri-user-fill"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Total Users</span>
+            <div class="stat-card__icon stat-card__icon--blue">
+              <i class="ri-user-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">856</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Active Users</span>
+            <div class="stat-card__icon stat-card__icon--green">
+              <i class="ri-user-heart-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">782</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Blocked Users</span>
+            <div class="stat-card__icon stat-card__icon--orange">
+              <i class="ri-user-forbid-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">12</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">New This Month</span>
+            <div class="stat-card__icon stat-card__icon--purple">
+              <i class="ri-user-add-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">45</div>
+        </div>
+      </div>
+
+      <!-- Content Card -->
+      <div class="content-card">
+        <div class="content-card__header">
+          <h2 class="content-card__title">All Users</h2>
+          <div style="display: flex; gap: 1rem">
+            <select class="form-select" style="width: auto">
+              <option>All Users</option>
+              <option>Active</option>
+              <option>Blocked</option>
+            </select>
+            <button class="button button--small">
+              <i class="ri-download-line"></i> Export
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <i class="ri-search-line search-bar__icon"></i>
+          <input
+            type="text"
+            class="search-bar__input"
+            placeholder="Search users by name or email..."
+          />
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Bookings</th>
+                <th>Joined</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 0.75rem">
+                    <div
+                      class="admin-header__avatar"
+                      style="width: 36px; height: 36px; font-size: 0.875rem"
+                    >
+                      JD
+                    </div>
+                    <div>
+                      <div style="font-weight: var(--font-semi-bold)">
+                        John Doe
+                      </div>
+                      <small style="color: var(--text-color-light)"
+                        >ID: #U001</small
+                      >
+                    </div>
+                  </div>
+                </td>
+                <td>john@example.com</td>
+                <td>+1 234 567 8900</td>
+                <td>5</td>
+                <td>2024-01-15</td>
+                <td><span class="badge badge--success">Active</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="viewUser()"
+                    >
+                      View
+                    </button>
+                    <button class="button button--small button--danger">
+                      Block
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 0.75rem">
+                    <div
+                      class="admin-header__avatar"
+                      style="width: 36px; height: 36px; font-size: 0.875rem"
+                    >
+                      JS
+                    </div>
+                    <div>
+                      <div style="font-weight: var(--font-semi-bold)">
+                        Jane Smith
+                      </div>
+                      <small style="color: var(--text-color-light)"
+                        >ID: #U002</small
+                      >
+                    </div>
+                  </div>
+                </td>
+                <td>jane@example.com</td>
+                <td>+1 234 567 8901</td>
+                <td>3</td>
+                <td>2024-02-20</td>
+                <td><span class="badge badge--success">Active</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="viewUser()"
+                    >
+                      View
+                    </button>
+                    <button class="button button--small button--danger">
+                      Block
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 0.75rem">
+                    <div
+                      class="admin-header__avatar"
+                      style="width: 36px; height: 36px; font-size: 0.875rem"
+                    >
+                      MJ
+                    </div>
+                    <div>
+                      <div style="font-weight: var(--font-semi-bold)">
+                        Mike Johnson
+                      </div>
+                      <small style="color: var(--text-color-light)"
+                        >ID: #U003</small
+                      >
+                    </div>
+                  </div>
+                </td>
+                <td>mike@example.com</td>
+                <td>+1 234 567 8902</td>
+                <td>8</td>
+                <td>2023-11-10</td>
+                <td><span class="badge badge--success">Active</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="viewUser()"
+                    >
+                      View
+                    </button>
+                    <button class="button button--small button--danger">
+                      Block
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 0.75rem">
+                    <div
+                      class="admin-header__avatar"
+                      style="width: 36px; height: 36px; font-size: 0.875rem"
+                    >
+                      SW
+                    </div>
+                    <div>
+                      <div style="font-weight: var(--font-semi-bold)">
+                        Sarah Williams
+                      </div>
+                      <small style="color: var(--text-color-light)"
+                        >ID: #U004</small
+                      >
+                    </div>
+                  </div>
+                </td>
+                <td>sarah@example.com</td>
+                <td>+1 234 567 8903</td>
+                <td>2</td>
+                <td>2024-03-05</td>
+                <td><span class="badge badge--danger">Blocked</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="viewUser()"
+                    >
+                      View
+                    </button>
+                    <button class="button button--small button--success">
+                      Unblock
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 0.75rem">
+                    <div
+                      class="admin-header__avatar"
+                      style="width: 36px; height: 36px; font-size: 0.875rem"
+                    >
+                      DB
+                    </div>
+                    <div>
+                      <div style="font-weight: var(--font-semi-bold)">
+                        David Brown
+                      </div>
+                      <small style="color: var(--text-color-light)"
+                        >ID: #U005</small
+                      >
+                    </div>
+                  </div>
+                </td>
+                <td>david@example.com</td>
+                <td>+1 234 567 8904</td>
+                <td>1</td>
+                <td>2024-10-12</td>
+                <td><span class="badge badge--success">Active</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="viewUser()"
+                    >
+                      View
+                    </button>
+                    <button class="button button--small button--danger">
+                      Block
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination__button" disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button class="pagination__button pagination__button--active">
+            1
+          </button>
+          <button class="pagination__button">2</button>
+          <button class="pagination__button">3</button>
+          <button class="pagination__button">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- User Details Modal -->
+    <div class="modal" id="userModal">
+      <div class="modal__content">
+        <div class="modal__header">
+          <h3 class="modal__title">User Details - John Doe</h3>
+          <button class="modal__close" onclick="closeUserModal()">
+            <i class="ri-close-line"></i>
+          </button>
+        </div>
+
+        <div style="display: grid; gap: 1.5rem">
+          <div>
+            <h4 style="margin-bottom: 0.5rem; color: var(--title-color)">
+              Personal Information
+            </h4>
+            <p><strong>Name:</strong> John Doe</p>
+            <p><strong>Email:</strong> john@example.com</p>
+            <p><strong>Phone:</strong> +1 234 567 8900</p>
+            <p><strong>User ID:</strong> #U001</p>
+            <p><strong>Joined:</strong> January 15, 2024</p>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: 0.5rem; color: var(--title-color)">
+              Activity
+            </h4>
+            <p><strong>Total Bookings:</strong> 5</p>
+            <p><strong>Total Spent:</strong> $12,495</p>
+            <p>
+              <strong>Status:</strong>
+              <span class="badge badge--success">Active</span>
+            </p>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              gap: 1rem;
+              justify-content: flex-end;
+              margin-top: 1rem;
+            "
+          >
+            <button class="button button--secondary" onclick="closeUserModal()">
+              Close
+            </button>
+            <button class="button button--danger">Block User</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Sidebar toggle
+      const sidebarToggle = document.getElementById("sidebarToggle");
+      const sidebar = document.getElementById("sidebar");
+
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("active");
+        });
+      }
+
+      function handleResize() {
+        if (window.innerWidth <= 968) {
+          sidebarToggle.style.display = "block";
+        } else {
+          sidebarToggle.style.display = "none";
+          sidebar.classList.remove("active");
+        }
+      }
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
+
+      // User modal
+      function viewUser() {
+        document.getElementById("userModal").classList.add("active");
+      }
+
+      function closeUserModal() {
+        document.getElementById("userModal").classList.remove("active");
+      }
+
+      document
+        .getElementById("userModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeUserModal();
+          }
+        });
+
+      // Logout function
+      function logout() {
+        sessionStorage.removeItem("adminLoggedIn");
+        sessionStorage.removeItem("adminEmail");
+        localStorage.removeItem("adminLoggedIn");
+        localStorage.removeItem("adminEmail");
+        window.location.href = "../client/index.html";
+      }
+    </script>
+  </body>
+</html>

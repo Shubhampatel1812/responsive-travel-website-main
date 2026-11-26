@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Bookings | Admin Panel</title>
+
+    <link
+      rel="shortcut icon"
+      href="../client/assets/img/favicon.png"
+      type="image/png"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/admin.css" />
+  </head>
+  <body>
+    <script src="../client/assets/js/validation.js"></script>
+    <script src="assets/js/admin-validation.js"></script>
+    <script>
+      // Authentication Check
+      (function () {
+        const isLoggedIn =
+          sessionStorage.getItem("adminLoggedIn") === "true" ||
+          localStorage.getItem("adminLoggedIn") === "true";
+        if (!isLoggedIn) {
+          window.location.href = "../client/login.html";
+        }
+      })();
+    </script>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="dashboard.html" class="sidebar__logo">
+        <i class="ri-plane-line"></i> Travel Admin
+      </a>
+
+      <nav class="sidebar__menu">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a href="dashboard.html" class="sidebar__link">
+              <i class="ri-dashboard-line sidebar__icon"></i>
+              <span class="sidebar__name">Dashboard</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="destinations.html" class="sidebar__link">
+              <i class="ri-map-pin-line sidebar__icon"></i>
+              <span class="sidebar__name">Destinations</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="bookings.html" class="sidebar__link active">
+              <i class="ri-calendar-check-line sidebar__icon"></i>
+              <span class="sidebar__name">Bookings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="users.html" class="sidebar__link">
+              <i class="ri-user-line sidebar__icon"></i>
+              <span class="sidebar__name">Users</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="blog.html" class="sidebar__link">
+              <i class="ri-article-line sidebar__icon"></i>
+              <span class="sidebar__name">Blog & Guides</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="messages.html" class="sidebar__link">
+              <i class="ri-message-line sidebar__icon"></i>
+              <span class="sidebar__name">Messages</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="settings.html" class="sidebar__link">
+              <i class="ri-settings-line sidebar__icon"></i>
+              <span class="sidebar__name">Settings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a
+              href="login.html"
+              class="sidebar__link"
+              onclick="logout(); return false;"
+            >
+              <i class="ri-logout-box-line sidebar__icon"></i>
+              <span class="sidebar__name">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="admin-header">
+        <div>
+          <button
+            class="sidebar-toggle"
+            id="sidebarToggle"
+            style="display: none"
+          >
+            <i class="ri-menu-line"></i>
+          </button>
+          <h1 class="admin-header__title">Manage Bookings</h1>
+        </div>
+        <div class="admin-header__user">
+          <div class="admin-header__user-info">
+            <div class="admin-header__user-name">Admin User</div>
+            <div class="admin-header__user-role">Administrator</div>
+          </div>
+          <div class="admin-header__avatar">
+            <i class="ri-user-fill"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Total Bookings</span>
+            <div class="stat-card__icon stat-card__icon--blue">
+              <i class="ri-calendar-check-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">1,234</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Pending</span>
+            <div class="stat-card__icon stat-card__icon--orange">
+              <i class="ri-time-line"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">45</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Confirmed</span>
+            <div class="stat-card__icon stat-card__icon--green">
+              <i class="ri-checkbox-circle-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">1,156</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Cancelled</span>
+            <div class="stat-card__icon stat-card__icon--purple">
+              <i class="ri-close-circle-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">33</div>
+        </div>
+      </div>
+
+      <!-- Content Card -->
+      <div class="content-card">
+        <div class="content-card__header">
+          <h2 class="content-card__title">All Bookings</h2>
+          <div style="display: flex; gap: 1rem">
+            <select class="form-select" style="width: auto">
+              <option>All Status</option>
+              <option>Pending</option>
+              <option>Confirmed</option>
+              <option>Cancelled</option>
+            </select>
+            <button class="button button--small">
+              <i class="ri-download-line"></i> Export
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <i class="ri-search-line search-bar__icon"></i>
+          <input
+            type="text"
+            class="search-bar__input"
+            placeholder="Search bookings by ID, customer name, or destination..."
+          />
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Destination</th>
+                <th>Travel Date</th>
+                <th>Guests</th>
+                <th>Amount</th>
+                <th>Payment</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#BK001</td>
+                <td>John Doe<br /><small>john@example.com</small></td>
+                <td>Bali, Indonesia</td>
+                <td>2024-12-15</td>
+                <td>2 Adults</td>
+                <td>$2,499</td>
+                <td><span class="badge badge--success">Paid</span></td>
+                <td><span class="badge badge--success">Confirmed</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="viewBooking()"
+                    >
+                      View
+                    </button>
+                    <button class="button button--small button--success">
+                      Confirm
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#BK002</td>
+                <td>Jane Smith<br /><small>jane@example.com</small></td>
+                <td>Hawaii, USA</td>
+                <td>2024-12-20</td>
+                <td>4 Adults</td>
+                <td>$3,499</td>
+                <td><span class="badge badge--warning">Pending</span></td>
+                <td><span class="badge badge--warning">Pending</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="viewBooking()"
+                    >
+                      View
+                    </button>
+                    <button class="button button--small button--success">
+                      Confirm
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#BK003</td>
+                <td>Mike Johnson<br /><small>mike@example.com</small></td>
+                <td>Bora Bora</td>
+                <td>2025-01-10</td>
+                <td>2 Adults, 1 Child</td>
+                <td>$1,599</td>
+                <td><span class="badge badge--success">Paid</span></td>
+                <td><span class="badge badge--success">Confirmed</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="viewBooking()"
+                    >
+                      View
+                    </button>
+                    <button class="button button--small button--danger">
+                      Cancel
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#BK004</td>
+                <td>Sarah Williams<br /><small>sarah@example.com</small></td>
+                <td>Whitehaven, Australia</td>
+                <td>2025-01-25</td>
+                <td>1 Adult</td>
+                <td>$2,499</td>
+                <td><span class="badge badge--info">Processing</span></td>
+                <td><span class="badge badge--info">Processing</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="viewBooking()"
+                    >
+                      View
+                    </button>
+                    <button class="button button--small button--success">
+                      Confirm
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>#BK005</td>
+                <td>David Brown<br /><small>david@example.com</small></td>
+                <td>Hvar, Croatia</td>
+                <td>2024-11-30</td>
+                <td>3 Adults</td>
+                <td>$1,999</td>
+                <td><span class="badge badge--success">Paid</span></td>
+                <td><span class="badge badge--danger">Cancelled</span></td>
+                <td>
+                  <div class="table__actions">
+                    <button
+                      class="button button--small button--secondary"
+                      onclick="viewBooking()"
+                    >
+                      View
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination__button" disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button class="pagination__button pagination__button--active">
+            1
+          </button>
+          <button class="pagination__button">2</button>
+          <button class="pagination__button">3</button>
+          <button class="pagination__button">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Booking Details Modal -->
+    <div class="modal" id="bookingModal">
+      <div class="modal__content">
+        <div class="modal__header">
+          <h3 class="modal__title">Booking Details - #BK001</h3>
+          <button class="modal__close" onclick="closeBookingModal()">
+            <i class="ri-close-line"></i>
+          </button>
+        </div>
+
+        <div style="display: grid; gap: 1.5rem">
+          <div>
+            <h4 style="margin-bottom: 0.5rem; color: var(--title-color)">
+              Customer Information
+            </h4>
+            <p><strong>Name:</strong> John Doe</p>
+            <p><strong>Email:</strong> john@example.com</p>
+            <p><strong>Phone:</strong> +1 234 567 8900</p>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: 0.5rem; color: var(--title-color)">
+              Booking Information
+            </h4>
+            <p><strong>Destination:</strong> Bali, Indonesia</p>
+            <p><strong>Travel Date:</strong> December 15, 2024</p>
+            <p><strong>Guests:</strong> 2 Adults</p>
+            <p><strong>Amount:</strong> $2,499</p>
+            <p>
+              <strong>Status:</strong>
+              <span class="badge badge--success">Confirmed</span>
+            </p>
+            <p>
+              <strong>Payment:</strong>
+              <span class="badge badge--success">Paid</span>
+            </p>
+          </div>
+
+          <div
+            style="
+              display: flex;
+              gap: 1rem;
+              justify-content: flex-end;
+              margin-top: 1rem;
+            "
+          >
+            <button
+              class="button button--secondary"
+              onclick="closeBookingModal()"
+            >
+              Close
+            </button>
+            <button class="button button--success">Update Status</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Sidebar toggle
+      const sidebarToggle = document.getElementById("sidebarToggle");
+      const sidebar = document.getElementById("sidebar");
+
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("active");
+        });
+      }
+
+      function handleResize() {
+        if (window.innerWidth <= 968) {
+          sidebarToggle.style.display = "block";
+        } else {
+          sidebarToggle.style.display = "none";
+          sidebar.classList.remove("active");
+        }
+      }
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
+
+      // Booking modal
+      function viewBooking() {
+        document.getElementById("bookingModal").classList.add("active");
+      }
+
+      function closeBookingModal() {
+        document.getElementById("bookingModal").classList.remove("active");
+      }
+
+      document
+        .getElementById("bookingModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeBookingModal();
+          }
+        });
+
+      // Logout function
+      function logout() {
+        sessionStorage.removeItem("adminLoggedIn");
+        sessionStorage.removeItem("adminEmail");
+        localStorage.removeItem("adminLoggedIn");
+        localStorage.removeItem("adminEmail");
+        window.location.href = "../client/index.html";
+      }
+    </script>
+  </body>
+</html>

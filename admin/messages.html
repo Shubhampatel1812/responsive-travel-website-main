@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messages & Inquiries | Admin Panel</title>
+
+    <link
+      rel="shortcut icon"
+      href="../client/assets/img/favicon.png"
+      type="image/png"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/admin.css" />
+  </head>
+  <body>
+    <script src="../client/assets/js/validation.js"></script>
+    <script src="assets/js/admin-validation.js"></script>
+    <script>
+      // Authentication Check
+      (function () {
+        const isLoggedIn =
+          sessionStorage.getItem("adminLoggedIn") === "true" ||
+          localStorage.getItem("adminLoggedIn") === "true";
+        if (!isLoggedIn) {
+          window.location.href = "../client/login.html";
+        }
+      })();
+    </script>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <a href="dashboard.html" class="sidebar__logo">
+        <i class="ri-plane-line"></i> Travel Admin
+      </a>
+
+      <nav class="sidebar__menu">
+        <ul class="sidebar__list">
+          <li class="sidebar__item">
+            <a href="dashboard.html" class="sidebar__link">
+              <i class="ri-dashboard-line sidebar__icon"></i>
+              <span class="sidebar__name">Dashboard</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="destinations.html" class="sidebar__link">
+              <i class="ri-map-pin-line sidebar__icon"></i>
+              <span class="sidebar__name">Destinations</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="bookings.html" class="sidebar__link">
+              <i class="ri-calendar-check-line sidebar__icon"></i>
+              <span class="sidebar__name">Bookings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="users.html" class="sidebar__link">
+              <i class="ri-user-line sidebar__icon"></i>
+              <span class="sidebar__name">Users</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="blog.html" class="sidebar__link">
+              <i class="ri-article-line sidebar__icon"></i>
+              <span class="sidebar__name">Blog & Guides</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="messages.html" class="sidebar__link active">
+              <i class="ri-message-line sidebar__icon"></i>
+              <span class="sidebar__name">Messages</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a href="settings.html" class="sidebar__link">
+              <i class="ri-settings-line sidebar__icon"></i>
+              <span class="sidebar__name">Settings</span>
+            </a>
+          </li>
+          <li class="sidebar__item">
+            <a
+              href="login.html"
+              class="sidebar__link"
+              onclick="logout(); return false;"
+            >
+              <i class="ri-logout-box-line sidebar__icon"></i>
+              <span class="sidebar__name">Logout</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="admin-header">
+        <div>
+          <button
+            class="sidebar-toggle"
+            id="sidebarToggle"
+            style="display: none"
+          >
+            <i class="ri-menu-line"></i>
+          </button>
+          <h1 class="admin-header__title">Messages & Inquiries</h1>
+        </div>
+        <div class="admin-header__user">
+          <div class="admin-header__user-info">
+            <div class="admin-header__user-name">Admin User</div>
+            <div class="admin-header__user-role">Administrator</div>
+          </div>
+          <div class="admin-header__avatar">
+            <i class="ri-user-fill"></i>
+          </div>
+        </div>
+      </header>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Total Messages</span>
+            <div class="stat-card__icon stat-card__icon--blue">
+              <i class="ri-message-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">156</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Unread</span>
+            <div class="stat-card__icon stat-card__icon--orange">
+              <i class="ri-mail-unread-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">12</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">Replied</span>
+            <div class="stat-card__icon stat-card__icon--green">
+              <i class="ri-reply-fill"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">134</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card__header">
+            <span class="stat-card__title">This Month</span>
+            <div class="stat-card__icon stat-card__icon--purple">
+              <i class="ri-calendar-line"></i>
+            </div>
+          </div>
+          <div class="stat-card__value">45</div>
+        </div>
+      </div>
+
+      <!-- Content Card -->
+      <div class="content-card">
+        <div class="content-card__header">
+          <h2 class="content-card__title">All Messages</h2>
+          <div style="display: flex; gap: 1rem">
+            <select class="form-select" style="width: auto">
+              <option>All Messages</option>
+              <option>Unread</option>
+              <option>Replied</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <i class="ri-search-line search-bar__icon"></i>
+          <input
+            type="text"
+            class="search-bar__input"
+            placeholder="Search messages by name or email..."
+          />
+        </div>
+
+        <!-- Messages List -->
+        <div style="display: grid; gap: 1rem">
+          <div
+            class="content-card"
+            style="
+              padding: 1rem;
+              cursor: pointer;
+              border-left: 4px solid var(--first-color);
+            "
+            onclick="viewMessage()"
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: start;
+              "
+            >
+              <div style="flex: 1">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  <h3
+                    style="
+                      margin: 0;
+                      color: var(--title-color);
+                      font-size: var(--h3-font-size);
+                    "
+                  >
+                    John Doe
+                  </h3>
+                  <span class="badge badge--info">New</span>
+                </div>
+                <p
+                  style="
+                    margin: 0 0 0.5rem 0;
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                  "
+                >
+                  john@example.com
+                </p>
+                <p style="margin: 0; color: var(--text-color)">
+                  I'm interested in booking a trip to Bali. Can you provide more
+                  information about the packages available?
+                </p>
+              </div>
+              <div style="text-align: right">
+                <div
+                  style="
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Nov 9, 2024
+                </div>
+                <button class="button button--small button--secondary">
+                  Reply
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="content-card"
+            style="
+              padding: 1rem;
+              cursor: pointer;
+              border-left: 4px solid #10b981;
+            "
+            onclick="viewMessage()"
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: start;
+              "
+            >
+              <div style="flex: 1">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  <h3
+                    style="
+                      margin: 0;
+                      color: var(--title-color);
+                      font-size: var(--h3-font-size);
+                    "
+                  >
+                    Jane Smith
+                  </h3>
+                  <span class="badge badge--success">Replied</span>
+                </div>
+                <p
+                  style="
+                    margin: 0 0 0.5rem 0;
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                  "
+                >
+                  jane@example.com
+                </p>
+                <p style="margin: 0; color: var(--text-color)">
+                  What is the best time to visit Hawaii? I'm planning a trip for
+                  next summer.
+                </p>
+              </div>
+              <div style="text-align: right">
+                <div
+                  style="
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Nov 8, 2024
+                </div>
+                <button class="button button--small button--secondary">
+                  View
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="content-card"
+            style="
+              padding: 1rem;
+              cursor: pointer;
+              border-left: 4px solid var(--first-color);
+            "
+            onclick="viewMessage()"
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: start;
+              "
+            >
+              <div style="flex: 1">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  <h3
+                    style="
+                      margin: 0;
+                      color: var(--title-color);
+                      font-size: var(--h3-font-size);
+                    "
+                  >
+                    Mike Johnson
+                  </h3>
+                  <span class="badge badge--info">New</span>
+                </div>
+                <p
+                  style="
+                    margin: 0 0 0.5rem 0;
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                  "
+                >
+                  mike@example.com
+                </p>
+                <p style="margin: 0; color: var(--text-color)">
+                  Do you offer group discounts for corporate travel?
+                </p>
+              </div>
+              <div style="text-align: right">
+                <div
+                  style="
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Nov 7, 2024
+                </div>
+                <button class="button button--small button--secondary">
+                  Reply
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="content-card"
+            style="
+              padding: 1rem;
+              cursor: pointer;
+              border-left: 4px solid #10b981;
+            "
+            onclick="viewMessage()"
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: start;
+              "
+            >
+              <div style="flex: 1">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  <h3
+                    style="
+                      margin: 0;
+                      color: var(--title-color);
+                      font-size: var(--h3-font-size);
+                    "
+                  >
+                    Sarah Williams
+                  </h3>
+                  <span class="badge badge--success">Replied</span>
+                </div>
+                <p
+                  style="
+                    margin: 0 0 0.5rem 0;
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                  "
+                >
+                  sarah@example.com
+                </p>
+                <p style="margin: 0; color: var(--text-color)">
+                  I need to cancel my booking. What is your cancellation policy?
+                </p>
+              </div>
+              <div style="text-align: right">
+                <div
+                  style="
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Nov 6, 2024
+                </div>
+                <button class="button button--small button--secondary">
+                  View
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="content-card"
+            style="
+              padding: 1rem;
+              cursor: pointer;
+              border-left: 4px solid #10b981;
+            "
+            onclick="viewMessage()"
+          >
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: start;
+              "
+            >
+              <div style="flex: 1">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  <h3
+                    style="
+                      margin: 0;
+                      color: var(--title-color);
+                      font-size: var(--h3-font-size);
+                    "
+                  >
+                    David Brown
+                  </h3>
+                  <span class="badge badge--success">Replied</span>
+                </div>
+                <p
+                  style="
+                    margin: 0 0 0.5rem 0;
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                  "
+                >
+                  david@example.com
+                </p>
+                <p style="margin: 0; color: var(--text-color)">
+                  Thank you for the amazing service! I had a wonderful time in
+                  Bora Bora.
+                </p>
+              </div>
+              <div style="text-align: right">
+                <div
+                  style="
+                    color: var(--text-color-light);
+                    font-size: var(--small-font-size);
+                    margin-bottom: 0.5rem;
+                  "
+                >
+                  Nov 5, 2024
+                </div>
+                <button class="button button--small button--secondary">
+                  View
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination__button" disabled>
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+          <button class="pagination__button pagination__button--active">
+            1
+          </button>
+          <button class="pagination__button">2</button>
+          <button class="pagination__button">3</button>
+          <button class="pagination__button">
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Message Detail Modal -->
+    <div class="modal" id="messageModal">
+      <div class="modal__content" style="max-width: 700px">
+        <div class="modal__header">
+          <h3 class="modal__title">Message from John Doe</h3>
+          <button class="modal__close" onclick="closeMessageModal()">
+            <i class="ri-close-line"></i>
+          </button>
+        </div>
+
+        <div style="display: grid; gap: 1.5rem">
+          <div>
+            <p><strong>From:</strong> John Doe</p>
+            <p><strong>Email:</strong> john@example.com</p>
+            <p><strong>Date:</strong> November 9, 2024</p>
+            <p><strong>Subject:</strong> Inquiry about Bali Packages</p>
+          </div>
+
+          <div
+            style="
+              background-color: #f9fafb;
+              padding: 1.5rem;
+              border-radius: var(--border-radius);
+            "
+          >
+            <h4 style="margin-bottom: 0.5rem; color: var(--title-color)">
+              Message:
+            </h4>
+            <p style="color: var(--text-color); line-height: 1.6">
+              I'm interested in booking a trip to Bali. Can you provide more
+              information about the packages available? I'm looking for a 7-day
+              trip for 2 people. What are the best times to visit and what
+              activities are included?
+            </p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="replyMessage">Reply Message</label>
+            <textarea
+              id="replyMessage"
+              class="form-textarea"
+              style="min-height: 150px"
+              placeholder="Type your reply here..."
+            ></textarea>
+          </div>
+
+          <div style="display: flex; gap: 1rem; justify-content: flex-end">
+            <button
+              class="button button--secondary"
+              onclick="closeMessageModal()"
+            >
+              Close
+            </button>
+            <button class="button button--success">Send Reply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Sidebar toggle
+      const sidebarToggle = document.getElementById("sidebarToggle");
+      const sidebar = document.getElementById("sidebar");
+
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("active");
+        });
+      }
+
+      function handleResize() {
+        if (window.innerWidth <= 968) {
+          sidebarToggle.style.display = "block";
+        } else {
+          sidebarToggle.style.display = "none";
+          sidebar.classList.remove("active");
+        }
+      }
+
+      window.addEventListener("resize", handleResize);
+      handleResize();
+
+      // Message modal
+      function viewMessage() {
+        document.getElementById("messageModal").classList.add("active");
+      }
+
+      function closeMessageModal() {
+        document.getElementById("messageModal").classList.remove("active");
+      }
+
+      document
+        .getElementById("messageModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeMessageModal();
+          }
+        });
+
+      // Logout function
+      function logout() {
+        sessionStorage.removeItem("adminLoggedIn");
+        sessionStorage.removeItem("adminEmail");
+        localStorage.removeItem("adminLoggedIn");
+        localStorage.removeItem("adminEmail");
+        window.location.href = "../client/index.html";
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Travel</title>
+    
+    <link rel="shortcut icon" href="../client/assets/img/favicon.png" type="image/png">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    
+    <style>
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, hsl(190, 64%, 22%) 0%, hsl(190, 64%, 35%) 100%);
+            padding: 2rem;
+        }
+        
+        .login-card {
+            background-color: var(--white-color);
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+        }
+        
+        .login-card__logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-card__logo h1 {
+            color: var(--first-color);
+            font-size: var(--h1-font-size);
+            font-weight: var(--font-semi-bold);
+            font-family: var(--title-font);
+        }
+        
+        .login-card__title {
+            text-align: center;
+            font-size: var(--h2-font-size);
+            color: var(--title-color);
+            margin-bottom: 0.5rem;
+            font-weight: var(--font-semi-bold);
+        }
+        
+        .login-card__subtitle {
+            text-align: center;
+            color: var(--text-color-light);
+            margin-bottom: 2rem;
+            font-size: var(--small-font-size);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: var(--font-medium);
+            color: var(--title-color);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1px solid #d1d5db;
+            border-radius: var(--border-radius);
+            font-size: var(--normal-font-size);
+            transition: var(--transition);
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--first-color);
+            box-shadow: 0 0 0 3px rgba(14, 55, 63, 0.1);
+        }
+        
+        .form-input-wrapper {
+            position: relative;
+        }
+        
+        .form-input-wrapper i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color-light);
+        }
+        
+        .form-input-wrapper .form-input {
+            padding-left: 2.5rem;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: var(--small-font-size);
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .forgot-link {
+            color: var(--first-color);
+            text-decoration: none;
+        }
+        
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+        
+        .button {
+            width: 100%;
+            padding: 0.875rem;
+            font-size: var(--normal-font-size);
+        }
+        
+        .login-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            font-size: var(--small-font-size);
+            display: none;
+        }
+        
+        .login-error.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-card">
+            <div class="login-card__logo">
+                <h1><i class="ri-plane-line"></i> Travel Admin</h1>
+            </div>
+            <h2 class="login-card__title">Welcome Back</h2>
+            <p class="login-card__subtitle">Sign in to access the admin panel</p>
+            
+            <div class="login-error" id="errorMessage">
+                Invalid email or password. Please try again.
+            </div>
+            
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <div class="form-input-wrapper">
+                        <i class="ri-mail-line"></i>
+                        <input type="email" id="email" name="email" class="form-input" placeholder="krish123@gmail.com" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="form-input-wrapper">
+                        <i class="ri-lock-line"></i>
+                        <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                </div>
+                
+                <div class="remember-forgot">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember" id="remember">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" class="forgot-link">Forgot Password?</a>
+                </div>
+                
+                <button type="submit" class="button">
+                    <i class="ri-login-box-line"></i> Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Redirect to client login page - only one login page for entire website
+        window.location.href = '../client/login.html';
+    </script>
+</body>
+</html>
+
